@@ -1,0 +1,48 @@
+[{"name":"gpt-4o-mini","api_key":"",
+  "base_url":"https://api.openai.com/v1/chat/completions","user_friendly_name":"GPT 4o mini (需要魔法)"},
+{"name":"gpt-4o","api_key":"",
+ "base_url":"https://api.openai.com/v1/chat/completions","user_friendly_name":"GPT 4o (需要魔法)"},
+{"name":"moonshot-v1-8k","api_key":"","base_url":"https://api.moonshot.cn/v1","user_friendly_name":"kimi 8k","tools":[{
+    "type": "builtin_function",
+    "function": {
+        "name": "$web_search"
+    }
+}]},
+{"name":"moonshot-v1-32k","api_key":"","base_url":"https://api.moonshot.cn/v1","user_friendly_name":"kimi 32k","tools":[{
+    "type": "builtin_function",
+    "function": {
+        "name": "$web_search"
+    }
+}]},
+{"name":"moonshot-v1-128k","api_key":"","base_url":"https://api.moonshot.cn/v1","user_friendly_name":"kimi 128k","tools":[{
+    "type": "builtin_function",
+    "function": {
+        "name": "$web_search"
+    }
+}]},
+{"name":"lite","base_url":"https://spark-api-open.xf-yun.com/v1/chat/completions","api_key":"",
+ "user_friendly_name":"星火Lite","use_openai":false},
+{"name":"generalv3","base_url":"https://spark-api-open.xf-yun.com/v1/chat/completions","api_key":"",
+ "user_friendly_name":"星火Pro","use_openai":false,
+ "tools": [{
+        "type": "web_search",
+        "web_search": {
+            "enable": true,
+            "show_ref_labels": true
+        }
+    }]
+},
+{"name":"4.0Ultra","base_url":"https://spark-api-open.xf-yun.com/v1/chat/completions","api_key":"",
+ "user_friendly_name":"星火4.0 Ultra","use_openai":false,
+ "tools": [{
+        "type": "web_search",
+        "web_search": {
+            "enable": true,
+            "show_ref_labels": true
+        }
+    }]
+},
+{"name":"deepseek-chat","base_url":"https://api.deepseek.com","api_key":"","user_friendly_name":"DeepSeek V3 API"},
+{"name":"deepseek-reasoner","base_url":"https://api.deepseek.com","api_key":"","user_friendly_name":"DeepSeek R1 API"},
+{"name":"qwen-plus","base_url":"https://dashscope.aliyuncs.com/compatible-mode/v1","api_key":"","user_friendly_name":"通义千问Max-Latest",
+"extra_body":{"enable_search": true}}]

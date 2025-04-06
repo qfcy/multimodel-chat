@@ -1,0 +1,12 @@
+pandas
+openpyxl
+requests
+tqdm
+brotli
+openai
+selenium
+tldextract
+packaging
+chardet
+
+pyinstaller
