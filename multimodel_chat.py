@@ -251,13 +251,17 @@ class SiderGUI(tk.Tk):
         self.update()
 
         if update_sider_info_at_init:
-            try:self.session.update_userinfo()
-            except Exception as err:
-                pass #warn(f"Failed to get user info ({type(err).__name__}): {err}")
-            self.update_remain()
+            t=Thread(target=self.update_info_at_init_thread)
+            t.start()
         if check_no_token(self.session):
             msgbox.showinfo("提示","初次使用，请登录或添加API Key!")
             self.show_account_manager(first=True)
+    def update_info_at_init_thread(self):
+        try:
+            self.session.update_userinfo()
+        except Exception as err:
+            pass #warn(f"Failed to get user info ({type(err).__name__}): {err}")
+        self.update_remain()
     def is_running(self):
         # 获取当前是否运行 (线程安全)
         with self._lock:
