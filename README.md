@@ -9,6 +9,7 @@
 pip install -r requirements.txt
 python multimodel_chat.py
 ```
+或者在Windows上，直接下载预构建的exe版本：[github.com/qfcy/multimodel-chat/releases/latest](https://github.com/qfcy/multimodel-chat/releases/latest)
 
 ## 效果图
 
@@ -32,6 +33,7 @@ After downloading the source code, navigate to the root directory of this reposi
 pip install -r requirements.txt
 python multimodel_chat.py
 ```
+Additionally, you can directly download the pre-built exe version for Windows: [github.com/qfcy/multimodel-chat/releases/latest](https://github.com/qfcy/multimodel-chat/releases/latest)
 
 ## Screenshot
 
