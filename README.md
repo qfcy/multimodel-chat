@@ -27,13 +27,13 @@ An all-in-one AI chat tool that integrates APIs of multiple large models, includ
 
 ## Run
 
-After downloading the source code, navigate to the root directory of this repository and enter the following commands:
+After downloading the source code, switch to the root directory of this repository and enter the following commands:
 
 ```
 pip install -r requirements.txt
 python multimodel_chat.py
 ```
-Additionally, you can directly download the pre-built exe version for Windows: [github.com/qfcy/multimodel-chat/releases/latest](https://github.com/qfcy/multimodel-chat/releases/latest)
+Additionally, you can directly download the pre-built EXE version for Windows: [github.com/qfcy/multimodel-chat/releases/latest](https://github.com/qfcy/multimodel-chat/releases/latest)
 
 ## Screenshot
 
