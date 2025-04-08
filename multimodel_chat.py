@@ -75,6 +75,13 @@ class AccountManager(tk.Toplevel):
         self.bind("<FocusIn>",lambda event:self.attributes("-topmost",True))
         self.bind("<FocusOut>",lambda event:self.attributes("-topmost",False))
 
+        buttons=tk.Frame(self)
+        ttk.Button(buttons,text="取消",width=6,command=self.quit).pack(
+            side=tk.RIGHT,padx=12)
+        ttk.Button(buttons,text="确定",width=6,command=self.save).pack(
+            side=tk.RIGHT,padx=12)
+        buttons.pack(side=tk.BOTTOM,fill=tk.X)
+
         login_text = "重新登录" if not self.first else "登录"
         lbl_sider=ttk.LabelFrame(self,text="Sider")
         btn_sider=ttk.Button(lbl_sider,text=f"\n{login_text}\n",
@@ -105,15 +112,9 @@ class AccountManager(tk.Toplevel):
 
             frame.pack(side=tk.TOP,fill=tk.X)
         frame_apikeys.pack(side=tk.TOP,expand=True,fill=tk.BOTH)
-
-        buttons=tk.Frame(self)
-        ttk.Button(buttons,text="确定",width=6,command=self.save).pack(
-            side=tk.LEFT,padx=12)
-        ttk.Button(buttons,text="取消",width=6,command=self.destroy).pack(
-            side=tk.LEFT,padx=12)
-        buttons.pack(side=tk.RIGHT,pady=2)
     def quit(self):
         self.destroyed=True # 标记自身已关闭
+        self.master.accountmgr_window = None
         self.destroy()
     def save(self):
         with open(OPENAI_TOKEN_FILE,encoding="utf-8") as f:
@@ -148,6 +149,7 @@ class AccountManager(tk.Toplevel):
             url,data_path,token_getter,
             self.master.is_running,
             done,fail))
+        t.daemon=True
         t.start()
 
 def check_no_token(session):
@@ -180,6 +182,7 @@ class SiderGUI(tk.Tk):
         self._running=False
         self._lock=Lock()
         self.threads=[]
+        self.accountmgr_window=None
 
         top_frame=tk.Frame(self)
         top_frame.pack(side=tk.TOP,fill=tk.X)
@@ -250,18 +253,25 @@ class SiderGUI(tk.Tk):
         self.redirect_stream()
         self.update()
 
-        if update_sider_info_at_init:
-            t=Thread(target=self.update_info_at_init_thread)
-            t.start()
         if check_no_token(self.session):
             msgbox.showinfo("提示","初次使用，请登录或添加API Key!")
             self.show_account_manager(first=True)
+        if update_sider_info_at_init:
+            t=Thread(target=self.update_info_at_init_thread)
+            t.daemon=True
+            t.start()
+            while t.is_alive():
+                try:self.update()
+                except tk.TclError:return
+                time.sleep(0.01)
+
+            try:self.update_remain()
+            except tk.TclError:return
     def update_info_at_init_thread(self):
         try:
             self.session.update_userinfo()
         except Exception as err:
             pass #warn(f"Failed to get user info ({type(err).__name__}): {err}")
-        self.update_remain()
     def is_running(self):
         # 获取当前是否运行 (线程安全)
         with self._lock:
@@ -295,7 +305,11 @@ class SiderGUI(tk.Tk):
             self.chat_display.delete(1.0, tk.END)
         self.session=Session(update_info_at_init=False)
     def show_account_manager(self, first = False):
-        AccountManager(self, first).show()
+        if self.accountmgr_window is None:
+            self.accountmgr_window = AccountManager(self, first = first)
+            self.accountmgr_window.show()
+        else:
+            self.accountmgr_window.focus_force()
 
     def send_message(self,event=None):
         if str(self.send_button["state"])==tk.DISABLED:return # 对于Ctrl+Enter
